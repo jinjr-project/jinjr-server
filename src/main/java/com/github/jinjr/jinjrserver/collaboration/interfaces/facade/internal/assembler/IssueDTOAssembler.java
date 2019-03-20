@@ -7,6 +7,9 @@ import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueCre
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class IssueDTOAssembler {
 
@@ -33,5 +36,15 @@ public class IssueDTOAssembler {
         dto.setUpdatedAt(issue.getUpdatedAt());
 
         return dto;
+    }
+
+    public List<IssueDTO> toDTOList(List<Issue> issues) {
+        List<IssueDTO> dtoList = new ArrayList<>();
+
+        for (Issue issue : issues) {
+            dtoList.add(toDto(issue));
+        }
+
+        return dtoList;
     }
 }

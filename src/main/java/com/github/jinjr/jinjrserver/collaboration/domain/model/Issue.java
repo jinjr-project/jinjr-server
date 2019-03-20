@@ -14,6 +14,10 @@ public class Issue {
     @Column
     private String summary;
 
+//    @Column
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Sprint sprint;
+
     @Column
     private Date createdAt;
 
@@ -34,6 +38,14 @@ public class Issue {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
     }
 
     public Date getCreatedAt() {

@@ -9,11 +9,21 @@ public class IssueCommand {
     @NotEmpty
     private String summary;
 
+    private Boolean isTodo = true;
+
     public String getSummary() {
         return summary;
     }
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public Boolean getTodo() {
+        return isTodo;
+    }
+
+    public void setTodo(Boolean todo) {
+        isTodo = todo;
     }
 }

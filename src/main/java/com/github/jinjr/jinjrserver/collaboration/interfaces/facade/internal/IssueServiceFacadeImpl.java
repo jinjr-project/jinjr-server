@@ -15,17 +15,14 @@ public class IssueServiceFacadeImpl implements IssueServiceFacade {
 
     private IssueDTOAssembler issueDTOAssembler;
 
-    public IssueServiceFacadeImpl(IssueService issueService) {
+    public IssueServiceFacadeImpl(IssueService issueService, IssueDTOAssembler issueDTOAssembler) {
         this.issueService = issueService;
-        issueDTOAssembler = new IssueDTOAssembler();
+        this.issueDTOAssembler = issueDTOAssembler;
     }
 
     @Override
     public IssueDTO createNewIssue(IssueCreationDTO dto) {
-        Issue issue = new Issue();
-        issue.setSummary(dto.getSummary());
-
-        issue = issueService.createNewIssue(issue);
+        Issue issue = issueService.createNewIssue(issueDTOAssembler.fromDTO(dto));
         return issueDTOAssembler.toDto(issue);
     }
 }

@@ -4,4 +4,6 @@ import com.github.jinjr.jinjrserver.collaboration.domain.model.Issue;
 
 public interface IssueService {
     Issue createNewIssue(Issue issue);
+
+    void updateIssue(Issue issue);
 }

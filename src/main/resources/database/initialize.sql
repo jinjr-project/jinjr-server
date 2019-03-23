@@ -1,0 +1,1 @@
+INSERT INTO issue_status (id, name, iconUrl, description) VALUES (1, "待办", "", "待办");

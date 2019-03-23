@@ -19,4 +19,9 @@ public class IssueServiceImpl implements IssueService {
         repository.save(issue);
         return issue;
     }
+
+    @Override
+    public void updateIssue(Issue issue) {
+        repository.save(issue);
+    }
 }

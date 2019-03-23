@@ -3,6 +3,7 @@ package com.github.jinjr.jinjrserver.collaboration.interfaces.facade.internal.as
 import com.github.jinjr.jinjrserver.collaboration.domain.model.*;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueCreationDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDTO;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueStatusDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueUpdateDTO;
 import org.springframework.stereotype.Component;
 
@@ -55,9 +56,12 @@ public class IssueDTOAssembler {
     }
 
     public IssueDTO toDto(Issue issue) {
+        IssueStatus status = issue.getStatus();
+
         IssueDTO dto = new IssueDTO();
         dto.setId(issue.getId());
         dto.setSummary(issue.getSummary());
+        dto.setStatus(new IssueStatusDTO(status.getId(), status.getName(), status.getIconUrl(), status.getDescription()));
         dto.setCreatedAt(issue.getCreatedAt());
         dto.setUpdatedAt(issue.getUpdatedAt());
 

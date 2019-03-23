@@ -1,11 +1,8 @@
 package com.github.jinjr.jinjrserver.collaboration.interfaces.web;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 public class IssueUpdateCommand {
-
-    @NotNull
     private Long id;
 
     @NotEmpty

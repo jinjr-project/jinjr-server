@@ -7,6 +7,8 @@ public class IssueDTO {
 
     private String summary;
 
+    private IssueStatusDTO status;
+
     private Date createdAt;
 
     private Date updatedAt;
@@ -25,6 +27,14 @@ public class IssueDTO {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public IssueStatusDTO getStatus() {
+        return status;
+    }
+
+    public void setStatus(IssueStatusDTO status) {
+        this.status = status;
     }
 
     public Date getCreatedAt() {

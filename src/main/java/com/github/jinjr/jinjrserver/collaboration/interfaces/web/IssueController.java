@@ -29,8 +29,7 @@ public class IssueController {
 
     @PutMapping("/issue/{id}")
     public IssueDTO updateIssue(@PathVariable Long id, @RequestBody @Valid IssueUpdateCommand command) {
-
-
+        command.setId(id);
         return issueServiceFacade.updateIssue(assembler.toDTO(command));
     }
 }

@@ -1,10 +1,16 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Sprint {
 
     @Id
@@ -20,6 +26,14 @@ public class Sprint {
 
     @Column
     private Integer issuesCount = 0;
+
+    @CreatedDate
+    @Column
+    private Date createdAt;
+
+    @LastModifiedDate
+    @Column
+    private Date updatedAt;
 
     public Sprint() {
         issues = new ArrayList<>();
@@ -61,5 +75,21 @@ public class Sprint {
 
     public void setIssuesCount(Integer issuesCount) {
         this.issuesCount = issuesCount;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

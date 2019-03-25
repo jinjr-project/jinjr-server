@@ -27,8 +27,8 @@ script:
 after_success:
   - docker build . -t jinjr/jinjr-server:$TRAVIS_COMMIT
   - docker push jinjr/jinjr-server:$TRAVIS_COMMIT
-  - kubectl rolling-update jinjr-server --image=jinjr/jinjr-server:$TRAVIS_COMMIT
-
+#  - kubectl rolling-update jinjr-server --image=jinjr/jinjr-server:$TRAVIS_COMMIT
+  - kubectl set image deployment/jinjr-server jinjr-server=jinjr/jijr-server:$TRAVIS_COMMIT
 
 cache:
   directories:

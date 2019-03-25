@@ -5,11 +5,14 @@ jdk:
 services:
   - docker
 
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
 install:
- - mvn clean package -DskipTests
+  - mvn clean package -DskipTests
 
 script:
- - echo "skip tests."
+  - echo "skip tests."
 
 after_success:
   - docker build . -t jinjr/jinjr-server:$TRAVIS_COMMIT

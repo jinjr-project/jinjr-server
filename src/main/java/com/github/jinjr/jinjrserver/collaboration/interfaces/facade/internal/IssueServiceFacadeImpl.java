@@ -7,6 +7,7 @@ import com.github.jinjr.jinjrserver.collaboration.domain.model.SprintRepository;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.IssueServiceFacade;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueCreationDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDTO;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueUpdateDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.SprintDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.internal.assembler.IssueDTOAssembler;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,14 @@ public class IssueServiceFacadeImpl implements IssueServiceFacade {
     @Override
     public IssueDTO createNewIssue(IssueCreationDTO dto) {
         Issue issue = issueService.createNewIssue(issueDTOAssembler.fromDTO(dto));
+        return issueDTOAssembler.toDto(issue);
+    }
+
+    @Override
+    public IssueDTO updateIssue(IssueUpdateDTO issueUpdateDTO) {
+
+        Issue issue = issueDTOAssembler.fromDTO(issueUpdateDTO);
+        issueService.updateIssue(issue);
         return issueDTOAssembler.toDto(issue);
     }
 

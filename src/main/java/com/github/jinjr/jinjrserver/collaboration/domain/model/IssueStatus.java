@@ -5,13 +5,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Sprint {
+public class IssueStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +19,11 @@ public class Sprint {
     @Column
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sprint")
-    private List<Issue> issues;
+    @Column
+    private String iconUrl;
 
     @Column
-    private Integer issuesCount = 0;
+    private String description;
 
     @CreatedDate
     @Column
@@ -35,22 +33,12 @@ public class Sprint {
     @Column
     private Date updatedAt;
 
-    public Sprint() {
-        issues = new ArrayList<>();
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void assignIssue(Issue issue) {
-        issuesCount += 1;
-        issue.setSprint(this);
-        issues.add(issue);
     }
 
     public String getName() {
@@ -61,20 +49,20 @@ public class Sprint {
         this.name = name;
     }
 
-    public List<Issue> getIssues() {
-        return issues;
+    public String getIconUrl() {
+        return iconUrl;
     }
 
-    public void setIssues(List<Issue> issues) {
-        this.issues = issues;
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 
-    public Integer getIssuesCount() {
-        return issuesCount;
+    public String getDescription() {
+        return description;
     }
 
-    public void setIssuesCount(Integer issuesCount) {
-        this.issuesCount = issuesCount;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getCreatedAt() {

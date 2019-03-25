@@ -1,9 +1,14 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Issue {
 
     @Id
@@ -14,13 +19,17 @@ public class Issue {
     @Column
     private String summary;
 
-//    @Column
     @ManyToOne(cascade = CascadeType.ALL)
     private Sprint sprint;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private IssueStatus status;
+
+    @CreatedDate
     @Column
     private Date createdAt;
 
+    @LastModifiedDate
     @Column
     private Date updatedAt;
 
@@ -46,6 +55,14 @@ public class Issue {
 
     public void setSprint(Sprint sprint) {
         this.sprint = sprint;
+    }
+
+    public IssueStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(IssueStatus status) {
+        this.status = status;
     }
 
     public Date getCreatedAt() {

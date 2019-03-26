@@ -26,7 +26,14 @@ public class QuerySprintRepositoryImpl implements QuerySprintRepository {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Sprint> criteria = builder.createQuery(Sprint.class);
         Root<Sprint> sprintRoot = criteria.from(Sprint.class);
-        criteria.where(builder.equal(sprintRoot.get("name"), name));
+
+
+        criteria.where(
+                builder.and(
+                        builder.equal(sprintRoot.get("name"), name),
+                        builder.equal(sprintRoot.get("todo").as(Boolean.class), true)
+                )
+        );
 
         Sprint sprint;
         try {
@@ -34,8 +41,8 @@ public class QuerySprintRepositoryImpl implements QuerySprintRepository {
         } catch (NoResultException e) {
             sprint = new Sprint();
             sprint.setName(name);
+            sprint.setTodo(true);
             entityManager.persist(sprint);
-//            entityManager.flush();
         }
 
         return sprint;

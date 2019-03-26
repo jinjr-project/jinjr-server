@@ -48,7 +48,8 @@ public class IssueServiceFacadeImpl implements IssueServiceFacade {
     public List<SprintDTO> loadSprints() {
         List<SprintDTO> dtoList = new ArrayList<>();
         for (Sprint sprint : sprintRepository.findAll()) {
-            dtoList.add(new SprintDTO(sprint.getId(), sprint.getName(), issueDTOAssembler.toDTOList(sprint.getIssues())));
+            dtoList.add(new SprintDTO(sprint.getId(), sprint.getName(), sprint.getTodo(),
+                    issueDTOAssembler.toDTOList(sprint.getIssues())));
         }
 
         return dtoList;

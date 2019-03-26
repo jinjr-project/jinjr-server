@@ -25,6 +25,9 @@ public class Sprint {
     private List<Issue> issues;
 
     @Column
+    private Boolean todo;
+
+    @Column
     private Integer issuesCount = 0;
 
     @CreatedDate
@@ -35,8 +38,9 @@ public class Sprint {
     @Column
     private Date updatedAt;
 
-    public Sprint() {
+    private Sprint() {
         issues = new ArrayList<>();
+        todo = false;
     }
 
     public Long getId() {
@@ -63,6 +67,14 @@ public class Sprint {
 
     public List<Issue> getIssues() {
         return issues;
+    }
+
+    public Boolean getTodo() {
+        return todo;
+    }
+
+    public void setTodo(Boolean todo) {
+        this.todo = todo;
     }
 
     public void setIssues(List<Issue> issues) {

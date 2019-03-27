@@ -38,9 +38,9 @@ public class IssueController {
     }
 
     @PutMapping("/issue/{id}/summary")
-    public ResponseEntity<IssueDTO> changeSummary(@PathVariable Long id, @RequestParam String summary) {
+    public ResponseEntity<IssueDTO> changeSummary(@PathVariable Long id, @RequestBody @Valid IssueSummaryCommand command) {
         try {
-            return ResponseEntity.ok(issueServiceFacade.changeIssueSummary(id, summary));
+            return ResponseEntity.ok(issueServiceFacade.changeIssueSummary(id, command.getSummary()));
         } catch (IssueNotFound issueNotFound) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

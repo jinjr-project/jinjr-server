@@ -38,7 +38,7 @@ public class Sprint {
     @Column
     private Date updatedAt;
 
-    private Sprint() {
+    public Sprint() {
         issues = new ArrayList<>();
         todo = false;
     }

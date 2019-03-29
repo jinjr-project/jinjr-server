@@ -1,11 +1,13 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
+import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

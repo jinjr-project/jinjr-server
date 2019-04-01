@@ -1,10 +1,7 @@
 package com.github.jinjr.jinjrserver.collaboration.interfaces.facade.internal.assembler;
 
 import com.github.jinjr.jinjrserver.collaboration.domain.model.*;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueCreationDTO;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDTO;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueStatusDTO;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueUpdateDTO;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -76,5 +73,29 @@ public class IssueDTOAssembler {
         }
 
         return dtoList;
+    }
+
+    public IssueDetailDTO toIssueDetailDto(Issue issue) {
+        IssueStatus status = issue.getStatus();
+
+        IssueDetailDTO dto = new IssueDetailDTO();
+        dto.setId(issue.getId());
+        dto.setSummary(issue.getSummary());
+        dto.setStatus(new IssueStatusDTO(status.getId(), status.getName(), status.getIconUrl(), status.getDescription()));
+        dto.setCreatedAt(issue.getCreatedAt());
+        dto.setUpdatedAt(issue.getUpdatedAt());
+
+        List<WorklogDTO> worklogDTOList = new ArrayList<>();
+
+        for (Worklog worklog : issue.getWorklogs()) {
+            worklogDTOList.add(new WorklogDTO(
+                    worklog.getId(),
+                    worklog.getContent(),
+                    new TimeExpressionDTO(worklog.getTimeSpent().getExpression(), worklog.getTimeSpent().getSeconds()),
+                    worklog.getStartedAt(), worklog.getCreatedAt(), worklog.getUpdatedAt()));
+        }
+        dto.setWorklogs(worklogDTOList);
+
+        return dto;
     }
 }

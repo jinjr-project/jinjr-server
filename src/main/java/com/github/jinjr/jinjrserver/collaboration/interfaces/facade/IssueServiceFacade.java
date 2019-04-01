@@ -7,6 +7,9 @@ import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.*;
 import java.util.List;
 
 public interface IssueServiceFacade {
+
+    IssueDetailDTO loadIssue(Long id) throws IssueNotFound;
+
     IssueDTO createNewIssue(IssueCreationDTO issue);
 
     IssueDTO updateIssue(IssueUpdateDTO issueUpdateDTO);

@@ -45,6 +45,14 @@ public class IssueServiceFacadeImpl implements IssueServiceFacade {
     }
 
     @Override
+    public IssueDetailDTO loadIssue(Long id) throws IssueNotFound {
+        Optional<Issue> issueOptional = issueRepository.findById(id);
+        issueOptional.orElseThrow(() -> new IssueNotFound(id));
+
+        return issueDTOAssembler.toIssueDetailDto(issueOptional.get());
+    }
+
+    @Override
     public IssueDTO createNewIssue(IssueCreationDTO dto) {
         Issue issue = issueService.createNewIssue(issueDTOAssembler.fromDTO(dto));
         return issueDTOAssembler.toDto(issue);

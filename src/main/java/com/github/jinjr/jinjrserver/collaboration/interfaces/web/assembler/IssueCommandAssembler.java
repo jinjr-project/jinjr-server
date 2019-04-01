@@ -2,8 +2,7 @@ package com.github.jinjr.jinjrserver.collaboration.interfaces.web.assembler;
 
 
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueUpdateDTO;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.web.IssueCommand;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.web.IssueUpdateCommand;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands.IssueUpdateCommand;
 
 public class IssueCommandAssembler {
 

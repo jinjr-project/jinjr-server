@@ -1,4 +1,4 @@
-package com.github.jinjr.jinjrserver.collaboration.interfaces.web;
+package com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands;
 
 import javax.validation.constraints.NotEmpty;
 

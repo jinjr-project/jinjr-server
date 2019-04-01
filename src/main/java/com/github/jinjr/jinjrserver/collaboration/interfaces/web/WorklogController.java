@@ -3,6 +3,7 @@ package com.github.jinjr.jinjrserver.collaboration.interfaces.web;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueNotFound;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.IssueServiceFacade;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.WorklogCreationDTO;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands.WorklogCreationCommand;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

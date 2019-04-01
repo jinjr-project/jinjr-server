@@ -1,12 +1,14 @@
 package com.github.jinjr.jinjrserver.collaboration.interfaces.web;
 
-import com.github.jinjr.jinjrserver.collaboration.domain.model.IssueStatus;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueNotFound;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueStatusNotFound;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.IssueServiceFacade;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueCreationDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.web.assembler.IssueCommandAssembler;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands.IssueCommand;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands.IssueSummaryCommand;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands.IssueUpdateCommand;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,11 @@ public class IssueController {
     public IssueDTO createNewIssue(@RequestBody @Valid IssueCommand command) {
         IssueCreationDTO issueCreationDTO = new IssueCreationDTO(command.getSummary());
         return issueServiceFacade.createNewIssue(issueCreationDTO);
+    }
+
+    @GetMapping("/issue/{id}")
+    public IssueDTO load(@PathVariable Long id) {
+        return null;
     }
 
     @PutMapping("/issue/{id}")

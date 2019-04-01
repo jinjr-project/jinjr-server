@@ -1,11 +1,13 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeTracking;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,12 @@ public class Issue {
 
     @OneToOne(cascade = CascadeType.ALL)
     private IssueStatus status;
+
+    @Embedded
+    private TimeTracking timeTracking;
+
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Worklog> worklogs;
 
     @CreatedDate
     @Column
@@ -67,6 +75,21 @@ public class Issue {
         this.status = status;
     }
 
+    public TimeTracking getTimeTracking() {
+        if (null == timeTracking) {
+            timeTracking = new TimeTracking(new TimeExpression("0s"), new TimeExpression("0s"));
+        }
+        return timeTracking;
+    }
+
+    public void setTimeTracking(TimeTracking timeTracking) {
+        this.timeTracking = timeTracking;
+    }
+
+    public List<Worklog> getWorklogs() {
+        return worklogs;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -81,5 +104,12 @@ public class Issue {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void addWorklog(Worklog worklog) {
+        if (null == worklogs) {
+            worklogs = new ArrayList<>();
+        }
+        worklogs.add(worklog);
     }
 }

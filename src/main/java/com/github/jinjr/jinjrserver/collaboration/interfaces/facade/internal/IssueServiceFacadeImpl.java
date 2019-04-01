@@ -4,12 +4,11 @@ import com.github.jinjr.jinjrserver.collaboration.application.IssueService;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.*;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueNotFound;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueStatusNotFound;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.IssueServiceFacade;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueCreationDTO;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDTO;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueUpdateDTO;
-import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.SprintDTO;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.*;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.internal.assembler.IssueDTOAssembler;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.internal.assembler.WorklogDTOAssembler;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -28,12 +27,21 @@ public class IssueServiceFacadeImpl implements IssueServiceFacade {
 
     private SprintRepository sprintRepository;
 
-    public IssueServiceFacadeImpl(IssueRepository issueRepository, IssueStatusRepository issueStatusRepository, IssueService issueService, IssueDTOAssembler issueDTOAssembler, SprintRepository sprintRepository) {
+    private WorklogDTOAssembler worklogDTOAssembler;
+
+    private WorklogRepository worklogRepository;
+
+    public IssueServiceFacadeImpl(IssueRepository issueRepository, IssueStatusRepository issueStatusRepository,
+                                  IssueService issueService, IssueDTOAssembler issueDTOAssembler,
+                                  SprintRepository sprintRepository, WorklogRepository worklogRepository) {
+
         this.issueRepository = issueRepository;
         this.issueStatusRepository = issueStatusRepository;
         this.issueService = issueService;
         this.issueDTOAssembler = issueDTOAssembler;
         this.sprintRepository = sprintRepository;
+        this.worklogRepository = worklogRepository;
+        this.worklogDTOAssembler = new WorklogDTOAssembler();
     }
 
     @Override
@@ -77,6 +85,28 @@ public class IssueServiceFacadeImpl implements IssueServiceFacade {
         issueRepository.save(issue);
 
         return issueDTOAssembler.toDto(issue);
+    }
+
+    @Override
+    public WorklogCreatedDTO addWorklog(WorklogCreationDTO worklogCreation) throws IssueNotFound {
+
+        Optional<Issue> issueOptional = issueRepository.findById(worklogCreation.getIssueId());
+        issueOptional.orElseThrow(() -> new IssueNotFound(worklogCreation.getIssueId()));
+
+        Issue issue = issueOptional.get();
+
+        Worklog worklog = new Worklog(worklogCreation.getContent(),
+                new TimeExpression(worklogCreation.getTimeSpend()), worklogCreation.getStarted());
+        issue.getTimeTracking().spentTime(
+                new TimeExpression(worklogCreation.getTimeSpend()),
+                new TimeExpression(worklogCreation.getRemaining())
+        );
+
+        worklog.assignToIssue(issue);
+
+        worklogRepository.save(worklog);
+
+        return worklogDTOAssembler.toDto(worklog);
     }
 
     @Override

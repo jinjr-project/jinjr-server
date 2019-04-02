@@ -1,6 +1,8 @@
 package com.github.jinjr.jinjrserver.collaboration.interfaces.facade.internal.assembler;
 
 import com.github.jinjr.jinjrserver.collaboration.domain.model.*;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeTracking;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.*;
 import org.springframework.stereotype.Component;
 
@@ -78,12 +80,25 @@ public class IssueDTOAssembler {
     public IssueDetailDTO toIssueDetailDto(Issue issue) {
         IssueStatus status = issue.getStatus();
 
-        IssueDetailDTO dto = new IssueDetailDTO();
-        dto.setId(issue.getId());
-        dto.setSummary(issue.getSummary());
-        dto.setStatus(new IssueStatusDTO(status.getId(), status.getName(), status.getIconUrl(), status.getDescription()));
-        dto.setCreatedAt(issue.getCreatedAt());
-        dto.setUpdatedAt(issue.getUpdatedAt());
+        TimeTracking timeTracking = issue.getTimeTracking();
+        TimeExpression spent = timeTracking.getOriginalEstimate().reduce(timeTracking.getRemainingEstimate());
+
+        TimeExpressionDTO original = new TimeExpressionDTO(
+                issue.getTimeTracking().getOriginalEstimate().getExpression(),
+                issue.getTimeTracking().getOriginalEstimate().getSeconds()
+        );
+
+        TimeExpressionDTO remaining = new TimeExpressionDTO(
+                issue.getTimeTracking().getRemainingEstimate().getExpression(),
+                issue.getTimeTracking().getRemainingEstimate().getSeconds()
+        );
+
+        TimeExpressionDTO spentDTO = new TimeExpressionDTO(
+                spent.getExpression(),
+                spent.getSeconds()
+        );
+
+        TimeTrackingDTO timeTrackingDTO = new TimeTrackingDTO(original, remaining, spentDTO);
 
         List<WorklogDTO> worklogDTOList = new ArrayList<>();
 
@@ -94,7 +109,12 @@ public class IssueDTOAssembler {
                     new TimeExpressionDTO(worklog.getTimeSpent().getExpression(), worklog.getTimeSpent().getSeconds()),
                     worklog.getStartedAt(), worklog.getCreatedAt(), worklog.getUpdatedAt()));
         }
-        dto.setWorklogs(worklogDTOList);
+        IssueDetailDTO dto = new IssueDetailDTO(worklogDTOList, timeTrackingDTO);
+        dto.setId(issue.getId());
+        dto.setSummary(issue.getSummary());
+        dto.setStatus(new IssueStatusDTO(status.getId(), status.getName(), status.getIconUrl(), status.getDescription()));
+        dto.setCreatedAt(issue.getCreatedAt());
+        dto.setUpdatedAt(issue.getUpdatedAt());
 
         return dto;
     }

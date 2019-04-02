@@ -32,7 +32,7 @@ public class Issue {
     @Embedded
     private TimeTracking timeTracking;
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Worklog> worklogs;
 
     @CreatedDate

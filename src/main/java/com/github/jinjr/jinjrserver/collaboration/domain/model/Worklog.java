@@ -24,6 +24,9 @@ public class Worklog {
     private String content;
 
     @Embedded
+    @AttributeOverrides(value = {
+            @AttributeOverride(name = "seconds", column = @Column(name = "time_spent_seconds"))
+    })
     private TimeExpression timeSpent;
 
     @Column

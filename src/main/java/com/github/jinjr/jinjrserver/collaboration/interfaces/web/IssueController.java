@@ -5,6 +5,7 @@ import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueS
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.IssueServiceFacade;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueCreationDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDTO;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.IssueDetailDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.web.assembler.IssueCommandAssembler;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands.IssueCommand;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.web.commands.IssueSummaryCommand;
@@ -34,8 +35,8 @@ public class IssueController {
     }
 
     @GetMapping("/issue/{id}")
-    public IssueDTO load(@PathVariable Long id) {
-        return null;
+    public IssueDetailDTO load(@PathVariable Long id) throws IssueNotFound {
+        return issueServiceFacade.loadIssue(id);
     }
 
     @PutMapping("/issue/{id}")

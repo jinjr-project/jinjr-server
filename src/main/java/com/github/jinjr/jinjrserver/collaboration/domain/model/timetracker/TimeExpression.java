@@ -133,6 +133,14 @@ public class TimeExpression {
         return add(new TimeExpression(-reduceTime.getSeconds()));
     }
 
+    public TimeExpression abs() {
+        return new TimeExpression(Math.abs(seconds));
+    }
+
+    public TimeExpression zero() {
+        return new TimeExpression(0L);
+    }
+
     @Override
     public TimeExpression clone() {
         return new TimeExpression(seconds);

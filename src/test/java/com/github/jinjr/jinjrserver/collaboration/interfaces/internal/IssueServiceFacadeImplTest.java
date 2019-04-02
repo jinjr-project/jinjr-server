@@ -44,7 +44,9 @@ public class IssueServiceFacadeImplTest {
         issue.setSummary("summary");
         issueRepository.save(issue);
 
-        WorklogCreatedDTO dto =  createIssueServiceFacade().addWorklog(new WorklogCreationDTO(
+        issueServiceFacade = createIssueServiceFacade();
+
+        WorklogCreatedDTO dto = issueServiceFacade.addWorklog(new WorklogCreationDTO(
                 issue.getId(),
                 "1m",
                 "10m",
@@ -56,6 +58,39 @@ public class IssueServiceFacadeImplTest {
         Assert.assertEquals(600L, (long)dto.getIssue().getTimeTracking().getRemainingEstimate().getSeconds());
         Assert.assertEquals("worklog", dto.getContent());
         Assert.assertEquals("1m", dto.getTimeSpent().getExpression());
+
+        dto = issueServiceFacade.addWorklog(new WorklogCreationDTO(
+                issue.getId(),
+                "1m",
+                "0m",
+                "worklog",
+                new Date()
+        ));
+
+        Assert.assertEquals(660L, (long)dto.getIssue().getTimeTracking().getOriginalEstimate().getSeconds());
+        Assert.assertEquals(540L, (long)dto.getIssue().getTimeTracking().getRemainingEstimate().getSeconds());
+
+        dto = issueServiceFacade.addWorklog(new WorklogCreationDTO(
+                issue.getId(),
+                "540s",
+                "0m",
+                "worklog",
+                new Date()
+        ));
+
+        Assert.assertEquals(660L, (long)dto.getIssue().getTimeTracking().getOriginalEstimate().getSeconds());
+        Assert.assertEquals(0L, (long)dto.getIssue().getTimeTracking().getRemainingEstimate().getSeconds());
+
+        dto = issueServiceFacade.addWorklog(new WorklogCreationDTO(
+                issue.getId(),
+                "40s",
+                "0m",
+                "worklog",
+                new Date()
+        ));
+
+        Assert.assertEquals(700L, (long)dto.getIssue().getTimeTracking().getOriginalEstimate().getSeconds());
+        Assert.assertEquals(0L, (long)dto.getIssue().getTimeTracking().getRemainingEstimate().getSeconds());
     }
 
     private IssueServiceFacade createIssueServiceFacade() {

@@ -7,7 +7,8 @@ public class TimeTrackingDTO {
 
     private TimeExpressionDTO timeSpent;
 
-    public TimeTrackingDTO(TimeExpressionDTO originalEstimate, TimeExpressionDTO remainingEstimate, TimeExpressionDTO timeSpent) {
+    public TimeTrackingDTO(TimeExpressionDTO originalEstimate, TimeExpressionDTO remainingEstimate,
+                           TimeExpressionDTO timeSpent) {
         this.originalEstimate = originalEstimate;
         this.remainingEstimate = remainingEstimate;
         this.timeSpent = timeSpent;

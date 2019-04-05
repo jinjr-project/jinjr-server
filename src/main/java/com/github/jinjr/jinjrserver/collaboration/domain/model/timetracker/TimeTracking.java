@@ -44,13 +44,18 @@ public class TimeTracking {
         this.remainingEstimate = remainingEstimate;
     }
 
+    public void refresh() {
+        originalEstimate.refresh();
+        remainingEstimate.refresh();
+    }
+
     public void spentTime(TimeExpression spent, TimeExpression remaining) {
         if (originalEstimate.getSeconds() == 0) {
             originalEstimate = originalEstimate.add(spent);
             remainingEstimate = originalEstimate;
         }
         originalEstimate = originalEstimate.add(remaining);
-        remainingEstimate = remainingEstimate.add(remaining).reduce(spent);
+        remainingEstimate = remainingEstimate.add(remaining).subtract(spent);
 
         if (remainingEstimate.getSeconds() < 0) {
             originalEstimate = originalEstimate.add(remainingEstimate.abs());

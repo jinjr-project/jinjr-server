@@ -66,10 +66,46 @@ public class TimeExpression {
         this.seconds = seconds;
     }
 
+    public void refresh() {
+        if (null == seconds) {
+            calculateSeconds();
+        }
+        if (null == expression) {
+            calculateExpression();
+        }
+    }
+
     private void calculateExpression() {
         StringBuilder sb = new StringBuilder();
-        if (seconds / DAY >= 1) {
-            sb.append((seconds / DAY) + "d");
+        Long cp = seconds;
+        Long days = seconds / DAY;
+        if (days >= 1) {
+            cp -= days * DAY;
+            sb.append(days + "d");
+        }
+
+        Long hours;
+        if (cp > 0) {
+            hours = cp / HOUR;
+
+            if (hours >= 1) {
+                cp -= hours * HOUR;
+                sb.append(hours + "h");
+            }
+        }
+
+        Long minutes;
+        if (cp > 0) {
+            minutes = cp / MINUTE;
+
+            if (minutes >= 1) {
+                cp -= minutes * MINUTE;
+                sb.append(minutes + "m");
+            }
+        }
+
+        if (cp > 0) {
+            sb.append(cp + "s");
         }
 
         expression = sb.toString();
@@ -129,7 +165,7 @@ public class TimeExpression {
         return cloned;
     }
 
-    public TimeExpression reduce(TimeExpression reduceTime) {
+    public TimeExpression subtract(TimeExpression reduceTime) {
         return add(new TimeExpression(-reduceTime.getSeconds()));
     }
 

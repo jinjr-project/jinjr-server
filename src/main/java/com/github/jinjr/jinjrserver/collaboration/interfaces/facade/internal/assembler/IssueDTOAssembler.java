@@ -81,7 +81,9 @@ public class IssueDTOAssembler {
         IssueStatus status = issue.getStatus();
 
         TimeTracking timeTracking = issue.getTimeTracking();
-        TimeExpression spent = timeTracking.getOriginalEstimate().reduce(timeTracking.getRemainingEstimate());
+        timeTracking.refresh();
+
+        TimeExpression spent = timeTracking.getOriginalEstimate().subtract(timeTracking.getRemainingEstimate());
 
         TimeExpressionDTO original = new TimeExpressionDTO(
                 issue.getTimeTracking().getOriginalEstimate().getExpression(),

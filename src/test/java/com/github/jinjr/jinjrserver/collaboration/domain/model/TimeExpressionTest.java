@@ -17,4 +17,12 @@ public class TimeExpressionTest {
         TimeExpression te = new TimeExpression("1h60m");
         Assert.assertEquals(Long.toString(3600L * 2), te.getSeconds().toString());
     }
+
+    @Test
+    public void testCac() {
+        TimeExpression te = new TimeExpression("1d1h59m20s");
+        TimeExpression te2 = new TimeExpression(te.getSeconds());
+
+        int a= 1;
+    }
 }

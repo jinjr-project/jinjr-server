@@ -11,7 +11,8 @@ public class WorklogDTOAssembler {
     public WorklogCreatedDTO toDto(Worklog worklog) {
 
         TimeTracking timeTracking = worklog.getIssue().getTimeTracking();
-        TimeExpression timeSpent = timeTracking.getOriginalEstimate().reduce(timeTracking.getRemainingEstimate());
+        timeTracking.refresh();
+        TimeExpression timeSpent = timeTracking.getOriginalEstimate().subtract(timeTracking.getRemainingEstimate());
         TimeTrackingDTO timeTrackingDTO = new TimeTrackingDTO(
                 new TimeExpressionDTO(
                         timeTracking.getOriginalEstimate().getExpression(),

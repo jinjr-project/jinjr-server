@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -35,6 +36,9 @@ public class IssueServiceFacadeImplTest {
 
     @Autowired
     private WorklogRepository worklogRepository;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private IssueServiceFacade issueServiceFacade;
 
@@ -98,7 +102,7 @@ public class IssueServiceFacadeImplTest {
         IssueDTOAssembler issueDTOAssembler = new IssueDTOAssembler(sprintRepository, issueRepository,
                 issueStatusRepository);
 
-        IssueService issueService = new IssueServiceImpl(issueRepository);
+        IssueService issueService = new IssueServiceImpl(issueRepository, worklogRepository, applicationEventPublisher);
 
         IssueServiceFacade issueServiceFacade = new IssueServiceFacadeImpl(issueRepository, issueStatusRepository,
                 issueService, issueDTOAssembler, sprintRepository, worklogRepository);

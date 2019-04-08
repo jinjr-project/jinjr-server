@@ -3,6 +3,10 @@ package com.github.jinjr.jinjrserver.collaboration.application.impl;
 import com.github.jinjr.jinjrserver.collaboration.application.IssueService;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.Issue;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.IssueRepository;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.Worklog;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.WorklogRepository;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,8 +14,14 @@ public class IssueServiceImpl implements IssueService {
 
     private IssueRepository repository;
 
-    public IssueServiceImpl(IssueRepository repository) {
+    private WorklogRepository worklogRepository;
+
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    public IssueServiceImpl(IssueRepository repository, WorklogRepository worklogRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.repository = repository;
+        this.worklogRepository = worklogRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -23,5 +33,15 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public void updateIssue(Issue issue) {
         repository.save(issue);
+    }
+
+    @Override
+    public Worklog spentTimeForIusse(Worklog worklog, Issue issue, TimeExpression remaining) {
+
+        issue.spentTime(worklog, remaining);
+        worklogRepository.save(worklog);
+
+        applicationEventPublisher.publishEvent(worklog);
+        return worklog;
     }
 }

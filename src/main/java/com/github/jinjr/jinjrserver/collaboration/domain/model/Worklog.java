@@ -108,9 +108,4 @@ public class Worklog {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-
-    public void assignToIssue(Issue issue) {
-        this.issue = issue;
-        issue.addWorklog(this);
-    }
 }

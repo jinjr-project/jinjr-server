@@ -102,17 +102,9 @@ public class IssueServiceFacadeImpl implements IssueServiceFacade {
         issueOptional.orElseThrow(() -> new IssueNotFound(worklogCreation.getIssueId()));
 
         Issue issue = issueOptional.get();
+        Worklog worklog = worklogDTOAssembler.fromDto(worklogCreation);
 
-        Worklog worklog = new Worklog(worklogCreation.getContent(),
-                new TimeExpression(worklogCreation.getTimeSpend()), worklogCreation.getStarted());
-        issue.getTimeTracking().spentTime(
-                new TimeExpression(worklogCreation.getTimeSpend()),
-                new TimeExpression(worklogCreation.getRemaining())
-        );
-
-        worklog.assignToIssue(issue);
-
-        worklogRepository.save(worklog);
+        issueService.spentTimeForIusse(worklog, issue, new TimeExpression(worklogCreation.getRemaining()));
 
         return worklogDTOAssembler.toDto(worklog);
     }

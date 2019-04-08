@@ -6,8 +6,19 @@ import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeT
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.TimeExpressionDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.TimeTrackingDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.WorklogCreatedDTO;
+import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.WorklogCreationDTO;
 
 public class WorklogDTOAssembler {
+
+    public Worklog fromDto(WorklogCreationDTO dto) {
+
+        Worklog worklog = new Worklog(dto.getContent(),
+                new TimeExpression(dto.getTimeSpend()), dto.getStarted());
+
+        return worklog;
+
+    }
+
     public WorklogCreatedDTO toDto(Worklog worklog) {
 
         TimeTracking timeTracking = worklog.getIssue().getTimeTracking();

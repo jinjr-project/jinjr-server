@@ -106,10 +106,12 @@ public class Issue {
         this.updatedAt = updatedAt;
     }
 
-    public void addWorklog(Worklog worklog) {
+    public void spentTime(Worklog worklog, TimeExpression remaining) {
         if (null == worklogs) {
             worklogs = new ArrayList<>();
         }
+        getTimeTracking().spentTime(worklog.getTimeSpent(), remaining);
         worklogs.add(worklog);
+        worklog.setIssue(this);
     }
 }

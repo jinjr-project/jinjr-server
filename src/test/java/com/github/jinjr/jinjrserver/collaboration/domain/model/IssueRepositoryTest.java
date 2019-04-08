@@ -33,7 +33,7 @@ public class IssueRepositoryTest {
         issue = issueRepository.findById(issue.getId()).get();
 
         Worklog worklog = new Worklog("worklog", new TimeExpression("1m"), new Date());
-        issue.addWorklog(worklog);
+        issue.spentTime(worklog, null);
 
         issueRepository.save(issue);
 

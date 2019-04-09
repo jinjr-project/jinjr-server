@@ -4,8 +4,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public class Activity {
 
     @Id
@@ -15,6 +13,9 @@ public class Activity {
 
     @Column
     private String summary;
+
+    @Column
+    private String changedSummary;
 
     @Column
     private Date createdAt;
@@ -33,6 +34,14 @@ public class Activity {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public String getChangedSummary() {
+        return changedSummary;
+    }
+
+    public void setChangedSummary(String changedSummary) {
+        this.changedSummary = changedSummary;
     }
 
     public Date getCreatedAt() {

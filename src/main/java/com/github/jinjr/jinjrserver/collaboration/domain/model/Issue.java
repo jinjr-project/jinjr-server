@@ -1,5 +1,6 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
+import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.Activity;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeTracking;
 import org.springframework.data.annotation.CreatedDate;
@@ -110,8 +111,25 @@ public class Issue {
         if (null == worklogs) {
             worklogs = new ArrayList<>();
         }
+        TimeExpression beforeRemaining = getTimeTracking().getRemainingEstimate().clone();
+
         getTimeTracking().spentTime(worklog.getTimeSpent(), remaining);
         worklogs.add(worklog);
         worklog.setIssue(this);
+
+        if (worklogs.size() > 0) {
+            Worklog lastWorklog = worklogs.get(worklogs.size() - 1);
+
+            Activity summaryActivity = new Activity();
+            summaryActivity.setSummary(lastWorklog.getContent());
+            summaryActivity.setChangedSummary(worklog.getContent());
+
+            Activity remainingActivity = new Activity();
+            remainingActivity.setSummary(getTimeTracking().getRemainingEstimate().getExpression().toUpperCase());
+            remainingActivity.setChangedSummary(beforeRemaining.getExpression().toUpperCase());
+
+            Activity spentActivity = new Activity();
+        }
+
     }
 }

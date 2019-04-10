@@ -10,11 +10,6 @@ public class TimeTracking {
     })
     private TimeExpression originalEstimate;
 
-//    @AttributeOverrides(value = {
-//            @AttributeOverride(name = "seconds", column = @Column(name = "spent_time_seconds"))
-//    })
-//    private TimeExpression spentTime;
-
 
     @AttributeOverrides(value = {
             @AttributeOverride(name = "seconds", column = @Column(name = "remaining_estimate_seconds"))
@@ -42,6 +37,10 @@ public class TimeTracking {
 
     public void setRemainingEstimate(TimeExpression remainingEstimate) {
         this.remainingEstimate = remainingEstimate;
+    }
+
+    public TimeExpression getTimeSpent() {
+        return originalEstimate.subtract(remainingEstimate);
     }
 
     public void refresh() {

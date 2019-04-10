@@ -9,5 +9,5 @@ public interface IssueService {
 
     void updateIssue(Issue issue);
 
-    Worklog spentTimeForIusse(Worklog worklog, Issue issue, TimeExpression remaining);
+    Issue spentTimeForIssue(Worklog worklog, Issue issue, TimeExpression remaining);
 }

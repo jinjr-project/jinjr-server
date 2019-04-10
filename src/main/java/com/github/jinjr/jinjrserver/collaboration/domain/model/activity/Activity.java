@@ -12,6 +12,9 @@ public class Activity {
     private Long id;
 
     @Column
+    private ActivityType type;
+
+    @Column
     private String summary;
 
     @Column
@@ -26,6 +29,14 @@ public class Activity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ActivityType getType() {
+        return type;
+    }
+
+    public void setType(ActivityType type) {
+        this.type = type;
     }
 
     public String getSummary() {

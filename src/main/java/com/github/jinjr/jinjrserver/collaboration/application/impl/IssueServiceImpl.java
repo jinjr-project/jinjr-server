@@ -39,12 +39,12 @@ public class IssueServiceImpl implements IssueService {
 
     @Transactional
     @Override
-    public Worklog spentTimeForIusse(Worklog worklog, Issue issue, TimeExpression remaining) {
+    public Issue spentTimeForIssue(Worklog worklog, Issue issue, TimeExpression remaining) {
 
         issue.spentTime(worklog, remaining);
-        worklogRepository.save(worklog);
+        repository.save(issue);
 
         applicationEventPublisher.publishEvent(new WorklogCreatedEvent(worklog));
-        return worklog;
+        return issue;
     }
 }

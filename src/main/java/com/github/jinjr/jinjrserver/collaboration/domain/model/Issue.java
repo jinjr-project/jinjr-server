@@ -1,6 +1,7 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
 import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.Activity;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.ActivityType;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeTracking;
 import org.springframework.data.annotation.CreatedDate;
@@ -33,8 +34,15 @@ public class Issue {
     @Embedded
     private TimeTracking timeTracking;
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinTable(name = "worklog")
+    @JoinColumn(name = "issue_id")
     private List<Worklog> worklogs;
+
+    @OneToMany(/*cascade = CascadeType.ALL, fetch = FetchType.LAZY*/)
+    @JoinColumn(name = "issue_id")
+    @JoinTable(name = "issue_activities")
+    private List<Activity> activities = new ArrayList<>();
 
     @CreatedDate
     @Column
@@ -112,24 +120,35 @@ public class Issue {
             worklogs = new ArrayList<>();
         }
         TimeExpression beforeRemaining = getTimeTracking().getRemainingEstimate().clone();
+        TimeExpression beforeTimeSpent = getTimeTracking().getTimeSpent().clone();
 
         getTimeTracking().spentTime(worklog.getTimeSpent(), remaining);
-        worklogs.add(worklog);
-        worklog.setIssue(this);
+
+        Activity summaryActivity = new Activity();
+        summaryActivity.setType(ActivityType.Worklog);
+        summaryActivity.setChangedSummary(worklog.getContent());
+
+        Activity remainingActivity = new Activity();
+        remainingActivity.setType(ActivityType.RemainingEstimate);
+        remainingActivity.setChangedSummary(getTimeTracking().getRemainingEstimate().getExpression().toUpperCase());
+
+        Activity spentActivity = new Activity();
+        spentActivity.setType(ActivityType.TimeSpent);
+        spentActivity.setChangedSummary(getTimeTracking().getTimeSpent().getExpression().toUpperCase());
 
         if (worklogs.size() > 0) {
             Worklog lastWorklog = worklogs.get(worklogs.size() - 1);
 
-            Activity summaryActivity = new Activity();
             summaryActivity.setSummary(lastWorklog.getContent());
-            summaryActivity.setChangedSummary(worklog.getContent());
-
-            Activity remainingActivity = new Activity();
-            remainingActivity.setSummary(getTimeTracking().getRemainingEstimate().getExpression().toUpperCase());
-            remainingActivity.setChangedSummary(beforeRemaining.getExpression().toUpperCase());
-
-            Activity spentActivity = new Activity();
+            remainingActivity.setSummary(beforeRemaining.getExpression().toUpperCase());
+            spentActivity.setSummary(beforeTimeSpent.getExpression().toUpperCase());
         }
 
+        activities.add(summaryActivity);
+        activities.add(remainingActivity);
+        activities.add(spentActivity);
+
+        worklogs.add(worklog);
+        worklog.setIssue(this);
     }
 }

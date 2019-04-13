@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 public class Activity {
 
     @Id

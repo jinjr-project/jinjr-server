@@ -2,6 +2,7 @@ package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
 import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.Activity;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.ActivityType;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.IssueActivity;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeTracking;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +16,10 @@ import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@NamedEntityGraph(name = "issue.findById", attributeNodes = {
+        @NamedAttributeNode("worklogs"),
+        @NamedAttributeNode("activities")
+})
 public class Issue {
 
     @Id
@@ -25,24 +30,23 @@ public class Issue {
     @Column
     private String summary;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Sprint sprint;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private IssueStatus status;
 
     @Embedded
     private TimeTracking timeTracking;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinTable(name = "worklog")
-    @JoinColumn(name = "issue_id")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "issue")
     private List<Worklog> worklogs;
 
-    @OneToMany(/*cascade = CascadeType.ALL, fetch = FetchType.LAZY*/)
-    @JoinColumn(name = "issue_id")
-    @JoinTable(name = "issue_activities")
-    private List<Activity> activities = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "issue")
+//    @JoinTable(name = "issue_activities",
+//        joinColumns = {@JoinColumn(name = "activities_id")},
+//        inverseJoinColumns = {@JoinColumn(name = "issue_id")})
+    private List<IssueActivity> activities = new ArrayList<>();
 
     @CreatedDate
     @Column
@@ -124,15 +128,15 @@ public class Issue {
 
         getTimeTracking().spentTime(worklog.getTimeSpent(), remaining);
 
-        Activity summaryActivity = new Activity();
+        IssueActivity summaryActivity = new IssueActivity();
         summaryActivity.setType(ActivityType.Worklog);
         summaryActivity.setChangedSummary(worklog.getContent());
 
-        Activity remainingActivity = new Activity();
+        IssueActivity remainingActivity = new IssueActivity();
         remainingActivity.setType(ActivityType.RemainingEstimate);
         remainingActivity.setChangedSummary(getTimeTracking().getRemainingEstimate().getExpression().toUpperCase());
 
-        Activity spentActivity = new Activity();
+        IssueActivity spentActivity = new IssueActivity();
         spentActivity.setType(ActivityType.TimeSpent);
         spentActivity.setChangedSummary(getTimeTracking().getTimeSpent().getExpression().toUpperCase());
 

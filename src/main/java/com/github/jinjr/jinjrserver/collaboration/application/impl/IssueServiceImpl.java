@@ -37,7 +37,7 @@ public class IssueServiceImpl implements IssueService {
         repository.save(issue);
     }
 
-    @Transactional
+//    @Transactional
     @Override
     public Issue spentTimeForIssue(Worklog worklog, Issue issue, TimeExpression remaining) {
 

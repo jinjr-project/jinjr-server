@@ -4,6 +4,8 @@ import com.github.jinjr.jinjrserver.collaboration.application.IssueService;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.*;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueNotFound;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueStatusNotFound;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.Sprint;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.SprintRepository;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.IssueServiceFacade;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.*;

@@ -4,6 +4,7 @@ import com.github.jinjr.jinjrserver.collaboration.application.IssueService;
 import com.github.jinjr.jinjrserver.collaboration.application.impl.IssueServiceImpl;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.*;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.exceptions.IssueNotFound;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.SprintRepository;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.IssueServiceFacade;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.WorklogCreatedDTO;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.WorklogCreationDTO;

@@ -1,6 +1,8 @@
 package com.github.jinjr.jinjrserver.collaboration.interfaces.facade.internal.assembler;
 
 import com.github.jinjr.jinjrserver.collaboration.domain.model.*;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.Sprint;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.SprintRepository;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeTracking;
 import com.github.jinjr.jinjrserver.collaboration.interfaces.facade.dto.*;

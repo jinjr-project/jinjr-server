@@ -1,5 +1,6 @@
-package com.github.jinjr.jinjrserver.collaboration.domain.model;
+package com.github.jinjr.jinjrserver.collaboration.domain.model.sprint;
 
+import com.github.jinjr.jinjrserver.collaboration.domain.model.Issue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

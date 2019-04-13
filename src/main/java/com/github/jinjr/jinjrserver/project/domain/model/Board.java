@@ -1,9 +1,6 @@
 package com.github.jinjr.jinjrserver.project.domain.model;
 
-import com.github.jinjr.jinjrserver.collaboration.domain.model.Sprint;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Board {

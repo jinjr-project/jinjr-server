@@ -1,8 +1,6 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
-import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.Activity;
-import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.ActivityType;
-import com.github.jinjr.jinjrserver.collaboration.domain.model.activity.IssueActivity;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.Sprint;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeExpression;
 import com.github.jinjr.jinjrserver.collaboration.domain.model.timetracker.TimeTracking;
 import org.springframework.data.annotation.CreatedDate;
@@ -41,12 +39,6 @@ public class Issue {
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "issue")
     private List<Worklog> worklogs;
-
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "issue")
-//    @JoinTable(name = "issue_activities",
-//        joinColumns = {@JoinColumn(name = "activities_id")},
-//        inverseJoinColumns = {@JoinColumn(name = "issue_id")})
-    private List<IssueActivity> activities = new ArrayList<>();
 
     @CreatedDate
     @Column
@@ -123,34 +115,8 @@ public class Issue {
         if (null == worklogs) {
             worklogs = new ArrayList<>();
         }
-        TimeExpression beforeRemaining = getTimeTracking().getRemainingEstimate().clone();
-        TimeExpression beforeTimeSpent = getTimeTracking().getTimeSpent().clone();
 
         getTimeTracking().spentTime(worklog.getTimeSpent(), remaining);
-
-        IssueActivity summaryActivity = new IssueActivity();
-        summaryActivity.setType(ActivityType.Worklog);
-        summaryActivity.setChangedSummary(worklog.getContent());
-
-        IssueActivity remainingActivity = new IssueActivity();
-        remainingActivity.setType(ActivityType.RemainingEstimate);
-        remainingActivity.setChangedSummary(getTimeTracking().getRemainingEstimate().getExpression().toUpperCase());
-
-        IssueActivity spentActivity = new IssueActivity();
-        spentActivity.setType(ActivityType.TimeSpent);
-        spentActivity.setChangedSummary(getTimeTracking().getTimeSpent().getExpression().toUpperCase());
-
-        if (worklogs.size() > 0) {
-            Worklog lastWorklog = worklogs.get(worklogs.size() - 1);
-
-            summaryActivity.setSummary(lastWorklog.getContent());
-            remainingActivity.setSummary(beforeRemaining.getExpression().toUpperCase());
-            spentActivity.setSummary(beforeTimeSpent.getExpression().toUpperCase());
-        }
-
-        activities.add(summaryActivity);
-        activities.add(remainingActivity);
-        activities.add(spentActivity);
 
         worklogs.add(worklog);
         worklog.setIssue(this);

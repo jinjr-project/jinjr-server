@@ -1,4 +1,4 @@
-package com.github.jinjr.jinjrserver.collaboration.domain.model;
+package com.github.jinjr.jinjrserver.collaboration.domain.model.sprint;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

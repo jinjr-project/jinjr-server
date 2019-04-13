@@ -1,5 +1,7 @@
 package com.github.jinjr.jinjrserver.collaboration.domain.model;
 
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.Sprint;
+import com.github.jinjr.jinjrserver.collaboration.domain.model.sprint.SprintRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

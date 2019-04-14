@@ -14,10 +14,6 @@ import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@NamedEntityGraph(name = "issue.findById", attributeNodes = {
-        @NamedAttributeNode("worklogs"),
-        @NamedAttributeNode("activities")
-})
 public class Issue {
 
     @Id
